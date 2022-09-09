@@ -2,12 +2,12 @@ apply plugin: 'com.android.application'
 
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 32
     buildToolsVersion rootProject.buildToolsVersion
     defaultConfig {
         applicationId "com.example.android.testing.androidjunitrunnersample"
         minSdkVersion 14
-        targetSdkVersion 28
+        targetSdkVersion 32
         versionCode 1
         versionName "1.0"
 
@@ -21,7 +21,20 @@ android {
     }
     productFlavors {
     }
-
+    testOptions {
+        managedDevices {
+            devices {
+                // run with ../gradlew  nexusOneApi30DebugAndroidTest
+                nexusOneApi30(com.android.build.api.dsl.ManagedVirtualDevice) {
+                   // A lower resolution device is used here for better emulator performance
+                    device = "Nexus One"
+                    apiLevel = 30
+                    // Also use the AOSP ATD image for better emulator performance
+                    systemImageSource = "aosp-atd"
+                }
+            }
+        }
+    }
     useLibrary 'android.test.runner'
 
     useLibrary 'android.test.base'
@@ -31,7 +44,7 @@ android {
 
 dependencies {
     // App's dependencies, including test
-    implementation 'androidx.annotation:annotation:' + rootProject.androidxLibVersion;
+    implementation 'androidx.annotation:annotation:' + rootProject.androidxAnnotationVersion;
     implementation 'com.google.guava:guava:' + rootProject.guavaVersion
 
     // Testing-only dependencies
@@ -39,4 +52,7 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:' + rootProject.extJUnitVersion;
     androidTestImplementation 'androidx.test:runner:' + rootProject.runnerVersion;
     androidTestImplementation 'androidx.test.espresso:espresso-core:' + rootProject.espressoVersion;
+
+    // https://truth.dev/
+    androidTestImplementation 'com.google.truth:truth:' + rootProject.truthVersion;
 }
